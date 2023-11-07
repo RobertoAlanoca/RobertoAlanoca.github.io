@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/e/style.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulación de Negocio</title>
+</head>
+<body>
+    <h2>Simulación de Negocio</h2>
+
+    <label for="clientesPorHora">Clientes por hora:</label>
+    <input type="number" id="clientesPorHora" value="2"><br><br>
+
+    <label for="costoPorDia">Costo por día:</label>
+    <input type="number" id="costoPorDia" value="300"><br><br>
+
+    <label for="costoPorArticulo">Costo por artículo:</label>
+    <input type="number" id="costoPorArticulo" value="50"><br><br>
+
+    <label for="precioDeVenta">Precio de venta:</label>
+    <input type="number" id="precioDeVenta" value="75"><br><br>
+
+    <label for="numSimulaciones">Número de Simulaciones:</label>
+    <input type="number" id="numSimulaciones" value="1"><br><br>
+
+    <button onclick="calcularGanancia()">Calcular Ganancia</button>
+
+    <table id="tablaResultados" style="width:100%">
+        <tr>
+            <th>Simulación</th>
+            <th>Ganancia Neta</th>
+            <th>Artículos Vendidos</th>
+            <th>Hora 1</th>
+            <th>Hora 2</th>
+            <th>Hora 3</th>
+            <th>Hora 4</th>
+            <th>Hora 5</th>
+            <th>Hora 6</th>
+            <th>Hora 7</th>
+            <th>Hora 8</th>
+            <th>Hora 9</th>
+            <th>Hora 10</th>
+        </tr>
+    </table>
+
+    <script>
+        function llegadaDeClientes() {
+          return Math.random() * 4 - 2; // Distribución uniforme: 2+-2
+        }
+
+        function compraDeArticulos() {
+          const probabilidadArticulos = [0.2, 0.3, 0.4, 0.1];
+          const r = Math.random();
+          let acumulada = 0;
+
+          for (let i = 0; i < probabilidadArticulos.length; i++) {
+            acumulada += probabilidadArticulos[i];
+            if (r <= acumulada) {
+              return i;
+            }
+          }
+          return probabilidadArticulos.length - 1;
+        }
+
+        function calcularGanancia() {
+          const clientesPorHora = parseFloat(document.getElementById('clientesPorHora').value);
+          const costoPorDia = parseFloat(document.getElementById('costoPorDia').value);
+          const costoPorArticulo = parseFloat(document.getElementById('costoPorArticulo').value);
+          const precioDeVenta = parseFloat(document.getElementById('precioDeVenta').value);
+          const numSimulaciones = parseInt(document.getElementById('numSimulaciones').value);
+
+          let tabla = document.getElementById('tablaResultados');
+          tabla.innerHTML = `<tr>
+                                <th>Simulación</th>
+                                <th>Ganancia Neta</th>
+                                <th>Artículos Vendidos</th>
+                                <th>Hora 1</th>
+                                <th>Hora 2</th>
+                                <th>Hora 3</th>
+                                <th>Hora 4</th>
+                                <th>Hora 5</th>
+                                <th>Hora 6</th>
+                                <th>Hora 7</th>
+                                <th>Hora 8</th>
+                                <th>Hora 9</th>
+                                <th>Hora 10</th>
+                             </tr>`;
+
+          let gananciaNetaTotal = 0;
+          let articulosVendidosTotal = 0;
+
+          for (let simulacion = 1; simulacion <= numSimulaciones; simulacion++) {
+            let gananciaNeta = 0;
+            let articulosVendidos = 0;
+            let resultadosPorHora = [];
+
+            for (let hora = 0; hora < 10; hora++) {
+              const clientesEstaHora = Math.floor(clientesPorHora + llegadaDeClientes());
+              let articulosVendidosHora = 0;
+
+              for (let i = 0; i < clientesEstaHora; i++) {
+                const articulosComprados = compraDeArticulos();
+                gananciaNeta += articulosComprados * precioDeVenta - costoPorArticulo * articulosComprados;
+                articulosVendidos += articulosComprados;
+                articulosVendidosHora += articulosComprados;
+              }
+              resultadosPorHora.push(articulosVendidosHora);
+            }
+
+            gananciaNeta -= costoPorDia;
+            gananciaNetaTotal += gananciaNeta;
+            articulosVendidosTotal += articulosVendidos;
+
+            tabla.innerHTML += `<tr>
+                                    <td>${simulacion}</td>
+                                    <td><center>${gananciaNeta.toFixed(2)} bs</center></td>
+                                    <td><center>${articulosVendidos}</center></td>
+                                    <td><center>${resultadosPorHora[0]}</center></td>
+                                    <td><center>${resultadosPorHora[1]}</center></td>
+                                    <td><center>${resultadosPorHora[2]}</center></td>
+                                    <td><center>${resultadosPorHora[3]}</center></td>
+                                    <td><center>${resultadosPorHora[4]}</center></td>
+                                    <td><center>${resultadosPorHora[5]}</center></td>
+                                    <td><center>${resultadosPorHora[6]}</center></td>
+                                    <td><center>${resultadosPorHora[7]}</center></td>
+                                    <td><center>${resultadosPorHora[8]}</center></td>
+                                    <td><center>${resultadosPorHora[9]}</center></td>
+                                </tr>`;
+          }
+
+          tabla.innerHTML += `<tr>
+                                  <th>Total</th>
+                                  <th>${gananciaNetaTotal.toFixed(2)} bs</th>
+                                  <th>${articulosVendidosTotal}</th>
+                                  <th></th>
+                                  <th></th>
+                                  <th></th>
+                                  <th></th>
+                                  <th></th>
+                                  <th></th>
+                                  <th></th>
+                                  <th></th>
+                                  <th></th>
+                                  <th></th>
+                              </tr>`;
+        }
+    </script>
+</body>
+</html>

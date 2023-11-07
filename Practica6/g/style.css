@@ -1,0 +1,64 @@
+/* Estilo para el cuerpo y la etiqueta h2 */
+body {
+    background-color: #56ad89;
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h2 {
+    text-align: center;
+    color: rgb(3, 3, 3);
+}
+
+/* Estilos para las etiquetas label y input */
+label {
+    font-weight: bold;
+    margin-right: 10px;
+    color: rgb(7, 3, 3);
+}
+
+input {
+    width: 70px;
+    padding: 5px;
+    border: 1px solid #999;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Estilo para el botón de ejecutar simulación */
+button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Estilos para la tabla */
+table {
+    border-collapse: collapse;
+    width: 80%;
+    margin: 20px auto;
+}
+
+thead {
+    background-color: #007BFF;
+    color: #fff;
+}
+
+th, td {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+/* Estilos para el título de resultados */
+h3 {
+    text-align: center;
+    margin-top: 20px;
+    color: rgb(0, 0, 0);
+}
